@@ -1,8 +1,12 @@
 package com.example.homework14
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.homework14.databinding.FragmentSampleHomeBinding
+import kotlinx.coroutines.launch
 
 class SampleHomeFragment :
     BaseFragment<FragmentSampleHomeBinding>(FragmentSampleHomeBinding::inflate) {
@@ -22,10 +26,19 @@ class SampleHomeFragment :
     }
 
     private fun setUpItemListAdapter() {
-        itemAdapter = ItemsRecycleAdapter()
+        itemAdapter = ItemsRecycleAdapter { item ->
+            viewModel.deleteItem(item)
+        }
         binding.itemsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.itemsRecyclerView.adapter = itemAdapter
-        itemAdapter.submitList(viewModel.itemsStateFlow.value)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.itemsStateFlow.collect { newList ->
+                    itemAdapter.submitList(newList)
+                }
+            }
+        }
     }
 
     private fun addNewItemType1() {

@@ -4,4 +4,5 @@
     <string name="refresh_page">Refresh Page</string>
     <string name="add_new_item_1">Add New Item Type 1</string>
     <string name="add_new_item_type_2">Add New Item Type 2</string>
+    <string name="delete">Del</string>
 </resources>

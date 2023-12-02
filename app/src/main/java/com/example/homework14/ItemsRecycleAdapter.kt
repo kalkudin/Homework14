@@ -8,12 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homework14.databinding.ItemLayout1Binding
 import com.example.homework14.databinding.ItemLayout2Binding
 
-class ItemsRecycleAdapter :
+class ItemsRecycleAdapter(private val onDeleteClickListener: (Item) -> Unit) :
     ListAdapter<Item, RecyclerView.ViewHolder>(ItemDiffUtilCallBack()) {
+
 
     inner class ViewHolder1(private val binding: ItemLayout1Binding) :
         RecyclerView.ViewHolder(binding.root) {
         private lateinit var item: Item
+
+        init {
+            binding.btnDelete.setOnClickListener {
+                onDeleteClickListener.invoke(item)
+            }
+        }
 
         fun bind() {
             item = currentList[adapterPosition]
@@ -25,6 +32,13 @@ class ItemsRecycleAdapter :
     inner class ViewHolder2(private val binding: ItemLayout2Binding) :
         RecyclerView.ViewHolder(binding.root) {
         private lateinit var item: Item
+
+        init {
+            binding.btnDelete.setOnClickListener {
+                // Notify the callback that delete button is clicked for this item
+                onDeleteClickListener?.invoke(item)
+            }
+        }
 
         fun bind() {
             item = currentList[adapterPosition]
