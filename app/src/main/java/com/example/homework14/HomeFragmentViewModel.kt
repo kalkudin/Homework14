@@ -48,6 +48,7 @@ class HomeFragmentViewModel : ViewModel() {
             type = type
         )
     }
+
     fun deleteItem(item: Item) {
         val currentList = _itemsStateFlow.value.toMutableList()
         currentList.remove(item)

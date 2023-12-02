@@ -17,6 +17,7 @@ class SampleHomeFragment :
 
     override fun setUp() {
         setUpItemListAdapter()
+        setUpSwipeRefreshLayout()
     }
 
     override fun setUpOnClickListeners() {
@@ -59,6 +60,14 @@ class SampleHomeFragment :
         binding.btnRefreshPage.setOnClickListener() {
             viewModel.resetToInitialItems()
             itemAdapter.submitList(viewModel.initialItems)
+        }
+    }
+
+    private fun setUpSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.resetToInitialItems()
+            itemAdapter.submitList(viewModel.initialItems)
+            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 }
